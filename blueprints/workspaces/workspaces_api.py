@@ -1,8 +1,11 @@
 
 
 from flask import Blueprint, request
+from flask_restful import Resource, Api, reqparse
+from app import mongo_app
 
-workspaces_api = Blueprint('workspaces', __name__, template_folder="templates")
+
+workspaces_api = Blueprint('workspaces_api', __name__, template_folder="templates")
 
 
 @workspaces_api.route('/create_workspace', methods=['POST'])
