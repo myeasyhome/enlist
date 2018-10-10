@@ -1,6 +1,6 @@
 
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_restful import Resource, Api, reqparse
 from app import mongo_app
 
@@ -11,7 +11,8 @@ workspaces_api = Blueprint('workspaces_api', __name__, template_folder="template
 @workspaces_api.route('/create_workspace', methods=['POST'])
 def create_workspace():
     if request.method == 'POST':
-        return 'Posting'
+        print("Create workspace API call")
+        return jsonify(status= "success")
 
 
 # Test API to acquire some data

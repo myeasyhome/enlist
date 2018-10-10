@@ -20,14 +20,56 @@ body{
     --black: #222d38;
 }
 
-#workspace-box{
+
+#workspace-maker-container{
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
 }
 
+#left-box{
+  width: 36%;
+  height: 100vh;
+  line-height: 1.5;
+}
+
+#left-header{
+  text-align: center;
+  padding-top: 16%;
+}
+
+#inputs-container{
+  width: 80%;
+  margin: auto;
+  text-align: center;
+}
+
+#submit-box{
+  width: 80%;
+  margin: auto;
+  text-align: center;
+}
+
+#finish-btn{
+  width: 60%;
+  margin-top: 5%;
+  background-color: var(--main-red);
+  color: white;
+  border-color: transparent;
+  border-radius: 3px;
+  box-shadow: 0px 3px 0px var(--sec-red);
+  font-size: 2em;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.finish-btn-inactive{
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+#finish-btn.finish-btn-active:hover{
+  background-color: var(--sec-red);
+  cursor: pointer;
+}
 
 .data-input{
     width: 100%;
@@ -42,84 +84,7 @@ body{
     line-height: 1.5;
 }
 
-.data-input:hover{
-    border-color: var(--blue-grey);
-}
-
-.data-input:focus{
-    border-width: 2px;
-    border-color: var(--blue-grey);
-}
-
-#workspace-maker-container{
-    display: flex;
-    width: 100%;
-    height: 100%;
-}
-
-#left-box{
-    width: 36%;
-    height: 100vh;
-    line-height: 1.5;
-}
-
-#left-sub-box{
-    width: 80%;
-    margin-left: 10%;
-    text-align: center;
-}
-
-#left-header{
-    padding-top: 30%;
-}
-
-#box-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50%;
-}
-
-#finish-btn{
-  width: 60%;
-  background-color: var(--main-blue);
-  color: white;
-  border-color: transparent;
-  border-radius: 3px;
-  box-shadow: 0px 3px 0px var(--sec-blue);
-  font-size: 2em;
-  padding-top: 2%;
-  padding-bottom: 2%;
-}
-
-#finish-btn:hover{
-  background-color: var(--sec-blue);
-  cursor: pointer;
-}
-
 #right-box{
-    width: 64%;
-    background-color: var(--main-blue);
-}
-
-.move-btn{
-    margin: 8%;
-    padding: 2%;
-    padding-left: 4%;
-    padding-right: 4%;
-    color: white;
-    background-color: var(--main-red);
-    border-color: transparent;
-    border-radius: 3px;
-    font-size: 2.5em;
-}
-
-.move-btn-active:hover{
-    cursor: pointer;
-    background-color: var(--sec-red);
-}
-
-.move-btn-disabled{
-    opacity: 0.65;
-    cursor: not-allowed;
+  width: 64%;
+  background-color: var(--main-blue);
 }

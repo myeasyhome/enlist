@@ -1,11 +1,6 @@
 
 
-// BOXES
-
-// Enter email and passowrd
-// Workspace name and total members
-
-class UserBox extends React.Component {
+class Inputs extends React.Component {
 
   constructor(props) {
     super(props);
@@ -13,121 +8,45 @@ class UserBox extends React.Component {
 
   render() {
     return (
-      <div id="user-box">
-        <input className="data-input" type="text" name="f-name" placeholder="First name" onChange={this.props.changeHandler}/>
+      <div id="inputs-box">
+
+        <input className="data-input" type="text" name="f-name" placeholder="First name" onChange={this.props.changeHandler} required/>
         <input className="data-input" type="text" name="l-name" placeholder="Last name" onChange={this.props.changeHandler}/>
-        <input className="data-input" type="email" name="email" placeholder="Email address" onChange={this.props.changeHandler}/>
-        <input className="data-input" type="password" name="password" placeholder="Password" onChange={this.props.changeHandler}/>
-      </div>
-    )
-  }
-}
-
-class WorkspaceBox extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div id="workspace-box">
         <input className="data-input" type="text" name="w-name" placeholder="Workspace name" onChange={this.props.changeHandler} />
+        <input className="data-input" type="email" name="email" placeholder="Email address" onChange={this.props.changeHandler} required />
+        <input className="data-input" type="password" name="password" placeholder="Password" onChange={this.props.changeHandler}  required/>
+
+      </div>
+
+    )
+  }
+}
+
+class SubmitHandler extends React.Component {
+  constructor(props) {
+    super(props);
+
+  }
+
+  render() {
+    return (
+      <div id="submit-box">
+        <button className={this.props.btnClass} id="finish-btn" type="submit" onClick={this.props.submitHandler.bind(this)}>Create</button>
       </div>
     )
   }
 }
-
-class SubmitBox extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <button id="finish-btn" type="submit" onClick={this.props.submitHandler.bind(this)}>Finish</button>
-    )
-  }
-}
-
-class ArrowButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  createId() {
-    return `move-btn-${this.props.direction}`;
-  }
-
-  // Apply classes depending on stageChange
-  setClasses() {
-    let classes = "move-btn";
-
-    if (this.props.cStage == 1) {
-      if (this.createId() == "move-btn-left") {
-        classes += " move-btn-disabled";
-      } else {
-        classes += " move-btn-active";
-      }
-    } else if (this.props.cStage == 3) {
-      if (this.createId() == "move-btn-right") {
-        classes += " move-btn-disabled";
-      } else {
-        classes += " move-btn-active";
-      }
-    } else {
-      classes += " move-btn-active";
-    }
-    return classes;
-  }
-
-  render() {
-    return (
-      <button className={this.setClasses()} id={this.createId()} onClick={this.props.clickHandler} type="button">
-        <i className={this.props.icon}></i>
-      </button>
-    )
-  }
-}
-
-
-class BoxController extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div id="boxes-controller">
-        <ArrowButton icon="fas fa-arrow-left" direction="left" clickHandler={this.props.clickHandler} cStage={this.props.cStage} />
-        <ArrowButton icon="fas fa-arrow-right" direction="right" clickHandler={this.props.clickHandler} cStage={this.props.cStage} />
-      </div>
-    )
-  }
-}
-
-// Decides which box needs to be render
-function CBox (props) {
-  if (props.cStage == 1) {
-    return <UserBox changeHandler={props.changeHandler.bind(this)} />
-  } else if (props.cStage == 2) {
-    return <WorkspaceBox changeHandler={props.changeHandler.bind(this)} />
-  } else {
-    return <SubmitBox submitHandler={props.submitHandler.bind(this)} />
-  }
-}
-
-
-// GOVERNOR
 
 class WorkspaceMaker extends React.Component {
+
   constructor(props) {
     super(props);
 
-    this.state = {formData: {'f-name': "", 'l-name': "", 'email': "", 'password': "", 'w-name': "", 'users': ""}, stage: 1}
+    this.state = {formData: {'f-name': undefined, 'l-name': undefined, 'email': undefined, 'password': undefined, 'w-name': undefined}, validData: false}
   }
 
   handleSubmit(event) {
-    console.log("Submit");
+    console.log(this.state.formData);
     event.preventDefault();
   }
 
@@ -138,40 +57,48 @@ class WorkspaceMaker extends React.Component {
     this.setState({formData: newDic});
   }
 
-  stageChange(event) {
-    // Detect the id of the clicked button
-    // If the left button is clicked, we substract one to the current stage, else, we add one
+  canSubmit() {
+    let valid = true;
 
-    if (event.target.id == "move-btn-left" && this.state.stage > 1) {
-      this.setState({stage: this.state.stage - 1})
+    Object.keys(this.state.formData).forEach((key) => {
+
+      let required = ['f-name', 'email', 'password', 'w-name'];
+
+      if (required.includes(key)) {
+        if (this.state.formData[key] == null) {
+          valid = false;
+        }
+      }
+    })
+    console.log(valid);
+
+    if (valid) {
+      return "finish-btn-active";
     }
-    else if (event.target.id == "move-btn-right" && this.state.stage < 3) {
-      this.setState({stage: this.state.stage + 1})
-    }
+    return "finish-btn-inactive"
   }
 
   render() {
     return (
       <div id="workspace-maker-container">
-
         <div id="left-box">
+          <h1 id="left-header">Create a new workspace</h1>
 
-          <div id="left-sub-box">
-            <h1 id="left-header">Create a new workspace</h1>
+          <div id="inputs-container">
+
             <form onSubmit={this.handleSubmit}>
-
-              <div id="box-container">
-                <CBox cStage={this.state.stage} changeHandler={this.inputChange.bind(this)} submitHandler={this.handleSubmit.bind(this)} />
-              </div>
-
-              <BoxController clickHandler={this.stageChange.bind(this)} cStage={this.state.stage}/>
+              <Inputs changeHandler={this.inputChange.bind(this)} />
             </form>
           </div>
+
+          <SubmitHandler submitHandler={this.handleSubmit.bind(this)} btnClass={this.canSubmit()}/>
+
         </div>
 
         <div id="right-box">
           <h1>Data</h1>
         </div>
+
       </div>
     )
   }
