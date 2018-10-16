@@ -47,6 +47,27 @@ class WorkspaceMaker extends React.Component {
 
   handleSubmit(event) {
     console.log(this.state.formData);
+
+    fetch('/create_workspace', {
+      method: 'POST',
+      headers: {
+
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.formData)
+    }).then((response) => {
+      return response.json();
+    }).then((data) => {
+      console.log(data);
+
+      if (data['status'] == "success") {
+        // If the API call went well
+        console.log("Si");
+      }
+    }).catch((err) => {
+      console.log("Error");
+    })
     event.preventDefault();
   }
 
