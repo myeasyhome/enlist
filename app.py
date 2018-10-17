@@ -3,8 +3,9 @@
 # Project 01: Enlist -- Devoid Labs
 
 # Main imports
-from flask import Flask 
+from flask import Flask
 from flask_pymongo import PyMongo
+from flask_bcrypt import Bcrypt
 import private
 
 
@@ -15,6 +16,7 @@ app.config['SERVER_NAME'] = "localdev:5000"
 app.config['MONGO_URI'] = private.MONGO_URL
 
 mongo_app = PyMongo(app)
+bcrypt_app = Bcrypt(app)
 
 
 # Blueprints
@@ -39,4 +41,3 @@ def workspace_homepage(workspace):
 
 if __name__ == '__main__':
     app.run(debug=True)
-

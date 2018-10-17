@@ -2,7 +2,7 @@
 
 from flask import Blueprint, request, jsonify
 from flask_restful import Resource, Api, reqparse
-from app import mongo_app
+from app import mongo_app, bcrypt_app
 
 
 workspaces_api = Blueprint('workspaces_api', __name__, template_folder="templates")
@@ -27,13 +27,13 @@ class CreateWorkspace(Resource):
         'email': call_data['email'],
         'fName': call_data['f-name'],
         'lName': call_data['l-name'],
-        'password': call_data['password'],
+        'password': bcrypt_app.generate_password_hash(call_data['password']),
         'userType': 'member'
         }
 
         try:
 
-            # Restricions, validation and password hash coming soon
+            # Restricions and validation coming soon
 
             mongo_app.db.workspaces.insert({
             'wName': call_data['w-name'],
