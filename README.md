@@ -11,6 +11,8 @@ Recruitment software.
 - Execute the following command to install the necessary python packages. ``` pipenv install ```
 - To activate the project local virtual environment, run the following command ``` pipenv shell ```
 - Execute the following command to install the necessary npm packages ``` npm install ```
+- Set the flask application ``` export FLASK_APP=app.py ```
+- Run the application ``` flask run ```
 
 ### Code of Conduct.
 This project has a [Code of Conduct](https://github.com/DevoidLabs/enlist/blob/master/CODE_OF_CONDUCT.md). By participating on this project you agree to abide by its terms
