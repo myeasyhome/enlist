@@ -4,10 +4,15 @@ from flask import Blueprint, request, jsonify
 from flask_restful import Resource, Api, reqparse
 from app import mongo_app, bcrypt_app
 
+from .helpers.validators import Validators
+
 
 workspaces_api = Blueprint('workspaces_api', __name__, template_folder="templates")
 api = Api(workspaces_api)
 
+
+# No hay nada que pueda perder, que no puede ser, que no pueda amar
+# QUE PUEDA SOÑAR!
 
 class CreateWorkspace(Resource):
     def post(self):
@@ -28,20 +33,21 @@ class CreateWorkspace(Resource):
         'fName': call_data['f-name'],
         'lName': call_data['l-name'],
         'password': bcrypt_app.generate_password_hash(call_data['password']),
-        'userType': 'member'
+        'userType': 'mod'
         }
 
         try:
-
-            # Restricions and validation coming soon
-
-            mongo_app.db.workspaces.insert({
-            'wName': call_data['w-name'],
-            'projects': [],
-            'owner': call_data['email'],
-            'users': [user_data]
-            })
-            return jsonify(status="success")
+            # Validate if a workspace has already been created with the following w_name and email address
+            if Validators.valid_workspace(call_data['w-name'], call_data['email']):
+                mongo_app.db.workspaces.insert({
+                'wName': call_data['w-name'],
+                'projects': [],
+                'owner': call_data['email'],
+                'users': [user_data]
+                })
+                return jsonify(status="success")
+            else:
+                return jsonify(status="error", message="Workspace already exists")
         except:
              return jsonify(status="error")
 
