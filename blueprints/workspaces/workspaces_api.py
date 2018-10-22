@@ -38,16 +38,21 @@ class CreateWorkspace(Resource):
 
         try:
             # Validate if a workspace has already been created with the following w_name and email address
-            if Validators.valid_workspace(call_data['w-name'], call_data['email']):
-                mongo_app.db.workspaces.insert({
-                'wName': call_data['w-name'],
-                'projects': [],
-                'owner': call_data['email'],
-                'users': [user_data]
-                })
-                return jsonify(status="success")
-            else:
-                return jsonify(status="error", message="Workspace already exists")
+            # Validate w_name length and characters
+
+            if Validators.valid_workspace_name(call_data['w-name'], call_data['email']):
+                # Verify if a w_name contains special characters
+                if not Validators.has_characters(call_data['w-name']):
+
+                    mongo_app.db.workspaces.insert({
+                    'wName': call_data['w-name'],
+                    'projects': [],
+                    'owner': call_data['email'],
+                    'users': [user_data]
+                    })
+                    return jsonify(status="success", message="Saved to database")
+                return jsonify(status="error", message="Special characters are not allowed")
+            return jsonify(status="error", message="Workspace already exists")
         except:
              return jsonify(status="error")
 
